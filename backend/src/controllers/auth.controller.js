@@ -27,8 +27,9 @@ export const signup=async (req,res)=>{
             password:hashedPassword
         })
         if(newUser){
-            generateToken(newUser._id,res)
-            await newUser.save()
+            //first save user to db then send cookie
+            const savedUser=await newUser.save()
+            generateToken(savedUser._id,res)
             res.status(201).json({//status 201 means something new is created
                 _id:newUser._id,
                 fullName:newUser.fullName,
